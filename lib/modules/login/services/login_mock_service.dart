@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../core/models/user_model.dart';
 import '../../../core/services/mock_data.dart';
 import 'package:http/http.dart' as http;
@@ -11,13 +13,17 @@ class LoginMockService {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'reqres-free-v1',
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
       },
       body: jsonEncode({'email': email, 'password': password}),
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final token = data['token'];
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+
       return UserModel.fromLoginResponse(email, token);
     } else if (response.statusCode == 400) {
       final data = jsonDecode(response.body);

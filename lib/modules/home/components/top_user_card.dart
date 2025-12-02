@@ -22,7 +22,7 @@ class TopUserCard extends StatelessWidget {
           backgroundColor: accentPurple,
           child: Text(
             '$rank',
-            style: const TextStyle(color:accentPurple, fontWeight: FontWeight.bold),
+            style: const TextStyle(color:background, fontWeight: FontWeight.bold),
           ),
         ),
         title: Text(user.name, style: const TextStyle(fontWeight: FontWeight.w600, color: textDark)),
