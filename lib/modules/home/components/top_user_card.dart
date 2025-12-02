@@ -4,7 +4,8 @@ import '../../../core/models/user_model.dart';
 import '../../../core/styles/app_colors.dart';
 
 class TopUserCard extends StatelessWidget {
-  final UserModel user;
+  //tampilan top user card kan butuh beberapa objek dibawah ini trs ga ubah ubah jd pake stateless
+  final UserModel user;//final || tipe data || properti
   final int rank;
   final VoidCallback onTap;
 

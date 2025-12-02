@@ -11,21 +11,17 @@ class LoginViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  Future<UserModel?> attemptLogin(String username, String password) async {
+  Future<UserModel?> attemptLogin(String email, String password) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final user = await _apiService.login(username, password);
-      if (user != null) {
-        return user;
-      } else {
-        _errorMessage = 'Login Gagal: Nama pengguna tidak ditemukan atau password salah.';
-        return null;
-      }
-    } catch (e) {
-      _errorMessage = 'Terjadi kesalahan jaringan: $e';
+      final user = await _apiService.login(email, password);
+      return user;
+    } 
+    catch (e) {
+      _errorMessage = e.toString().replaceFirst('Exception: ', '');
       return null;
     } finally {
       _isLoading = false;

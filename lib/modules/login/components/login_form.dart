@@ -8,16 +8,17 @@ class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
   @override
+  //nyimpen state yg bisa berubah sama definisiin tampilan
   State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _usernameController = TextEditingController(text: 'Username');
-  final TextEditingController _passwordController = TextEditingController(text: 'password'); 
+  final TextEditingController _emailController = TextEditingController(text: 'eve.holt@reqres.in');
+  final TextEditingController _passwordController = TextEditingController(text: 'cityslicka'); 
 
   void _login() async {
     final viewModel = Provider.of<LoginViewModel>(context, listen: false);
-    final username = _usernameController.text.trim();
+    final username = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     if (username.isEmpty || password.isEmpty) {
@@ -52,8 +53,8 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
-            controller: _usernameController,
-            decoration: const InputDecoration(labelText: 'Username'),
+            controller: _emailController,
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
           const SizedBox(height: 16),
           TextField(

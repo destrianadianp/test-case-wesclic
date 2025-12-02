@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+//definisiin seluruh warna yg bakal dipake
 const Color primaryBlue = Color(0xFF1E88E5); 
 const Color accentPurple = Color(0xFF673AB7); 
 const Color background = Color(0xFFF4F6F8);

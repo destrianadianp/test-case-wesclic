@@ -4,10 +4,10 @@ import 'package:test_case_skill/core/styles/app_colors.dart';
 ThemeData get appTheme {
   return ThemeData(
     primaryColor: primaryBlue,
-    scaffoldBackgroundColor: background,
+    scaffoldBackgroundColor: background,//warana latar blkng default
     appBarTheme: const AppBarTheme(
       backgroundColor: background,
-      foregroundColor: textDark,
+      foregroundColor: textDark,//konten di dalem appbar
       elevation: 1,
     ),
     cardTheme: CardThemeData(
@@ -25,7 +25,7 @@ ThemeData get appTheme {
         textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     ),
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: InputDecorationTheme(//buat texformfield
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: const BorderSide(color: textLight),

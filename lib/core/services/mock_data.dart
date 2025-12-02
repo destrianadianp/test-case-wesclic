@@ -1,5 +1,5 @@
 import '../models/user_model.dart';
-
+//manggil usermodel yg dibuat tadi pake list bentuk array trs dinamain pake allusers
 final List<UserModel> allUsers = [
   UserModel(id: '1', name: 'John Doe', email: 'john.doe@example.com', imageUrl: 'https://i.pravatar.cc/150?img=1'),
   UserModel(id: '2', name: 'Jane Smith', email: 'jane.smith@example.com', imageUrl: 'https://i.pravatar.cc/150?img=2'),
