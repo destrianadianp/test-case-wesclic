@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
+  import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/models/user_model.dart';
 import '../../../core/services/mock_data.dart';
@@ -39,12 +38,42 @@ class LoginMockService {
   }
 
   Future<List<UserModel>> getAllUsers() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return allUsers;
+    final urlAllUsers = Uri.parse('https://reqres.in/api/users?page=2');
+    final response = await http.get(
+      urlAllUsers, 
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07'
+        
+      });
+    if (response.statusCode==200) {
+      final data = jsonDecode(response.body);
+      final listUser = data['data'];
+      return List<UserModel>.from(listUser.map((user) => UserModel.fromJson(user)));
+    } else if (response.statusCode == 400) {
+      final data = jsonDecode(response.body);
+      throw Exception(data['error'] ?? 'Kredensial tidak valid.');
+    } else {
+      throw Exception('Gagal menghubungi server. Kode: ${response.statusCode}');
+    }
   }
 
   Future<UserModel> getUserDetail(String userId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return allUsers.firstWhere((user) => user.id == userId);
+    final url = Uri.parse('https://reqres.in/api/users/$userId');
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
+      },
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final Map<String, dynamic> userJson = data['data'];
+      return UserModel.fromJson(userJson);
+    }
+    else{
+      throw Exception('Gagal menghubungi server. Kode: ${response.statusCode}');
+    }
   }
 }

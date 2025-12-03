@@ -25,7 +25,7 @@ class UserListViewModel extends ChangeNotifier {
     try {
       _allUsers = await _apiService.getAllUsers();
     } catch (e) {
-      _errorMessage = 'Gagal memuat daftar pengguna.';
+      _errorMessage = 'Gagal memuat daftar pengguna. ${e}';
     } finally {
       _isLoading = false;
       notifyListeners();

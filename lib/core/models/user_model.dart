@@ -22,4 +22,12 @@ class UserModel {
       imageUrl: 'https://i.pravatar.cc/150?img=1', 
       token: token);
   }
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'].toString(),
+      name: '${json['first_name']} ${json['last_name']}',
+      email: json['email'],
+      imageUrl: json['avatar'],
+    );
   }
+}
