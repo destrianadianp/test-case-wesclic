@@ -5,13 +5,15 @@ class UserModel {
   final String email;
   final String imageUrl;
   final String? token;
+  final String? job;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.imageUrl,
-    this.token
+    this.token,
+    this.job
   });
 
   factory UserModel.fromLoginResponse(String email, String token){
@@ -29,5 +31,14 @@ class UserModel {
       email: json['email'],
       imageUrl: json['avatar'],
     );
+  }
+  factory UserModel.fromCRUD(Map<String, dynamic> json, {required String email}){
+    return UserModel(
+      id: json['id'] ?? 0, 
+    name: json['name'] ?? '', 
+    email: json['email'] ?? '', 
+    imageUrl: json['avatar'] ?? 'https://i.pravatar.cc/150?img=default',
+    job: json['job']
+      );
   }
 }

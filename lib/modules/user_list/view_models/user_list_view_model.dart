@@ -16,6 +16,11 @@ class UserListViewModel extends ChangeNotifier {
   UserListViewModel() {
     fetchAllUsers();
   }
+  void addLocalUser(UserModel user) {
+    _allUsers.insert(0, user); 
+    print(_allUsers);
+    notifyListeners();
+  }
 
   Future<void> fetchAllUsers() async {
     _isLoading = true;

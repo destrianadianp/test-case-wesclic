@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:test_case_skill/core/styles/app_colors.dart';
+import 'package:test_case_skill/core/styles/custom_button.dart';
 
 import '../components/profile_header.dart';
 import '../view_models/user_detail_view_model.dart';
@@ -26,12 +28,47 @@ class UserDetailView extends StatelessWidget {
             if (user == null) {
               return const Center(child: Text('Pengguna tidak ditemukan'));
             }
-            
-           
+
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: ProfileHeader(user: user),
+              child: Column(
+                children: [
+                  Center(child: ProfileHeader(user: user)),
+                  const SizedBox(height: 32),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          child: Text(
+                            "Edit",
+                            style: TextStyle(color: background),
+                          ),
+                          onpressed: () => Navigator.pushNamed(
+                            context,
+                            '/add-edit-user',
+                            arguments: user!.id,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomButton(
+                          child: Text("Hapus"),
+                          onpressed: () async {
+                            // 💡 PENTING: Panggil ViewModel.deleteUser()
+                            await viewModel.DeleteUser(user!.id);
+
+                            // Setelah delete sukses, kembali ke User List View
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              // Catatan: Di aplikasi nyata, Anda perlu me-refresh UserListView di sini.
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
           },

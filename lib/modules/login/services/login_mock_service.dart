@@ -1,5 +1,5 @@
 import 'dart:convert';
-  import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/models/user_model.dart';
 import '../../../core/services/mock_data.dart';
@@ -40,16 +40,18 @@ class LoginMockService {
   Future<List<UserModel>> getAllUsers() async {
     final urlAllUsers = Uri.parse('https://reqres.in/api/users?page=2');
     final response = await http.get(
-      urlAllUsers, 
+      urlAllUsers,
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07'
-        
-      });
-    if (response.statusCode==200) {
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
+      },
+    );
+    if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final listUser = data['data'];
-      return List<UserModel>.from(listUser.map((user) => UserModel.fromJson(user)));
+      return List<UserModel>.from(
+        listUser.map((user) => UserModel.fromJson(user)),
+      );
     } else if (response.statusCode == 400) {
       final data = jsonDecode(response.body);
       throw Exception(data['error'] ?? 'Kredensial tidak valid.');
@@ -71,9 +73,62 @@ class LoginMockService {
       final data = jsonDecode(response.body);
       final Map<String, dynamic> userJson = data['data'];
       return UserModel.fromJson(userJson);
-    }
-    else{
+    } else {
       throw Exception('Gagal menghubungi server. Kode: ${response.statusCode}');
+    }
+  }
+
+  Future<UserModel> CreateUser({String? name, String? job}) async {
+    final url = Uri.parse('https://reqres.in/api/users');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
+      },
+      body: jsonEncode({'name': name, 'job': job}),
+    );
+    if (response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+    //  final Map<String, dynamic> userJson = data['data'];
+     return UserModel(id: data['id'], name: data['name'], email: '', imageUrl: '');
+    } else {
+      throw Exception('Gagal menghubungi server');
+    }
+  }
+
+  Future<UserModel?> EditUser(String name, String job, String userId) async {
+    final url = Uri.parse('https://reqres.in/api/users/$userId');
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
+      },
+      body: jsonEncode({'name': name, 'job': job}),
+    );
+    if (response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+     final Map<String, dynamic> userJson = data['data'];
+     return UserModel.fromCRUD(data, email: 'updated.user@reqres.in');
+    } else {
+      throw Exception('Gagal menghubungi server');
+    }
+  }
+
+  Future<void> DeleteUser(String userId) async {
+    final url = Uri.parse('https://reqres.in/api/users/$userId');
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
+      },
+    );
+    if (response.statusCode == 204) {
+     return;
+    } else {
+      throw Exception('Gagal menghubungi server');
     }
   }
 }
