@@ -46,7 +46,7 @@ class UserDetailView extends StatelessWidget {
                           onpressed: () => Navigator.pushNamed(
                             context,
                             '/add-edit-user',
-                            arguments: user!.id,
+                            arguments: user.id,
                           ),
                         ),
                       ),
@@ -56,7 +56,7 @@ class UserDetailView extends StatelessWidget {
                           child: Text("Hapus"),
                           onpressed: () async {
                             // 💡 PENTING: Panggil ViewModel.deleteUser()
-                            await viewModel.DeleteUser(user!.id);
+                            await viewModel.deleteUser(user.id);
 
                             // Setelah delete sukses, kembali ke User List View
                             if (context.mounted) {

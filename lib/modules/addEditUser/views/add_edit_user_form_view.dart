@@ -1,24 +1,24 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_case_skill/core/models/user_model.dart';
 import 'package:test_case_skill/modules/addEditUser/view_model/add_edit_user_view_model.dart';
 
 import '../../../core/styles/custom_button.dart';
 import '../../../core/styles/custom_text_field.dart';
 
 class AddEditUserFormView extends StatelessWidget {
-  
-  final UserModel? userToEdit;
 
-  const AddEditUserFormView({super.key, this.userToEdit});
+  final String? userId;
+
+  const AddEditUserFormView({super.key, this.userId});
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AddEditUserViewModel(userToEdit: userToEdit),
+      create: (context) => AddEditUserViewModel(userId: userId),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(userToEdit == null ? 'Tambah User Baru' : 'Edit User'),
+          title: Text(userId == null ? 'Tambah User Baru' : 'Edit User'),
         ),
         body: Consumer<AddEditUserViewModel>(
           builder: (context, viewModel, child) {
@@ -38,20 +38,22 @@ class AddEditUserFormView extends StatelessWidget {
                     text: 'Masukkan Jabatan/Pekerjaan',
                   ),
                   const SizedBox(height: 30),
-                  
+
                   CustomButton(
                     onpressed: viewModel.isLoading
                         ? null
                         : () async {
+                            print('Tombol simpan perubahan ditekan!');
                             final newUser = await viewModel.submitForm();
-                                Navigator.pop(context, newUser); 
-                            // }
+                            if (context.mounted) {
+                                Navigator.pop(context, newUser);
+                            }
                           },
                     child: viewModel.isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : Text(userToEdit == null ? 'Tambah User' : 'Simpan Perubahan'),
+                        : Text(userId == null ? 'Tambah User' : 'Simpan Perubahan'),
                   ),
-                  
+
                   if (viewModel.errorMessage != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),

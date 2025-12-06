@@ -45,9 +45,9 @@ class UserListView extends StatelessWidget {
                     child: Text("Tambah"),
                     onpressed: () async {
                       final result = await Navigator.pushNamed(context, '/add-user');
-                      print(result);
+
                       if (result is UserModel) {
-                        print('masuk');
+
                         viewModel.addLocalUser(result); 
                       } else if (result == true) {
                         viewModel.fetchAllUsers();

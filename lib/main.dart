@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_case_skill/modules/addEditUser/views/add_edit_user_form_view.dart';
@@ -7,6 +8,7 @@ import 'core/styles/app_theme.dart';
 import 'modules/login/views/login_view.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final saveToken = prefs.getString('token');
 
@@ -27,8 +29,16 @@ class MyApp extends StatelessWidget {
       routes: {
         'Login': (context) => const LoginView(),
         'Home': (context) => const HomeView(),
-        '/add-user': (context) => const AddEditUserFormView(),
-        '/add-edit-user': (context) => const AddEditUserFormView(),
+        '/add-user': (context) {
+          final userId = ModalRoute.of(context)?.settings.arguments as String?;
+          log('Navigating to /add-user with userId: $userId');
+          return AddEditUserFormView(userId: userId);
+        },
+        '/add-edit-user': (context) {
+          final userId = ModalRoute.of(context)?.settings.arguments as String?;
+          log('Navigating to /add-edit-user with userId: $userId');
+          return AddEditUserFormView(userId: userId);
+        },
       },
     );
   }

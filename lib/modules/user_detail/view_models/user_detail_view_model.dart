@@ -4,8 +4,8 @@ import 'package:test_case_skill/modules/login/services/login_mock_service.dart';
 import '../../../core/models/user_model.dart';
 
 class UserDetailViewModel extends ChangeNotifier {
-  Future <void> DeleteUser(String userId) async {
-    await _apiService.DeleteUser(userId);
+  Future <void> deleteUser(String userId) async {
+    await _apiService.deleteUser(userId);
   }
   final LoginMockService _apiService = LoginMockService();
   UserModel? _user;
