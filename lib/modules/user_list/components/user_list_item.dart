@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/models/user_model.dart';
@@ -9,6 +11,7 @@ class UserListItem extends StatelessWidget {
   const UserListItem({super.key, required this.user});
 
   void _navigateToDetail(BuildContext context) {
+    log('Navigating to detail for user: ${user.name}, ID: ${user.id}');
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => UserDetailView(userId: user.id)),
     );
