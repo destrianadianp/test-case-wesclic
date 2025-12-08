@@ -31,4 +31,22 @@ class UserDetailViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> refreshUser() async {
+    if (_user != null) {
+      fetchUserDetail(_user!.id);
+    }
+  }
+
+  Future<void> deleteUser(String userId) async {
+    await _apiService.deleteUser(userId);
+  }
+
+  // Method to update the local user data
+  void updateUserData(UserModel updatedUser) {
+    if (_user != null && _user!.id == updatedUser.id) {
+      _user = updatedUser;
+      notifyListeners();
+    }
+  }
 }
