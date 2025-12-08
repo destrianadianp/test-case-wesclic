@@ -55,13 +55,10 @@ class UserDetailView extends StatelessWidget {
                         child: CustomButton(
                           child: Text("Hapus"),
                           onpressed: () async {
-                            // 💡 PENTING: Panggil ViewModel.deleteUser()
                             await viewModel.deleteUser(user.id);
 
-                            // Setelah delete sukses, kembali ke User List View
                             if (context.mounted) {
-                              Navigator.pop(context);
-                              // Catatan: Di aplikasi nyata, Anda perlu me-refresh UserListView di sini.
+                              Navigator.pop(context, user.id);
                             }
                           },
                         ),

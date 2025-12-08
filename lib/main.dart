@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_case_skill/modules/addEditUser/views/add_edit_user_form_view.dart';
+import 'package:test_case_skill/modules/add_edit_user/views/add_edit_user_form_view.dart';
 import 'package:test_case_skill/modules/home/views/home_view.dart';
 
 import 'core/styles/app_theme.dart';
