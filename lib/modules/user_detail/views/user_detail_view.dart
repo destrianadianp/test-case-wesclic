@@ -3,12 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:test_case_skill/core/styles/app_colors.dart';
 import 'package:test_case_skill/core/styles/custom_button.dart';
 
+import '../../../core/models/user_model.dart';
 import '../components/profile_header.dart';
 import '../view_models/user_detail_view_model.dart';
 
 class UserDetailView extends StatelessWidget {
   final String userId;
-  const UserDetailView({super.key, required this.userId});
+  final Function(UserModel)? onUserUpdated; // Callback to notify parent
+
+  const UserDetailView({super.key, required this.userId, this.onUserUpdated});
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +46,22 @@ class UserDetailView extends StatelessWidget {
                             "Edit",
                             style: TextStyle(color: background),
                           ),
-                          onpressed: () => Navigator.pushNamed(
-                            context,
-                            '/add-edit-user',
-                            arguments: user.id,
-                          ),
+                          onpressed: () async {
+                            final result = await Navigator.pushNamed(
+                              context,
+                              '/add-edit-user',
+                              arguments: user.id,
+                            );
+
+                            // After editing, update the local data with the returned user
+                            if (result != null && result is UserModel) {
+                              viewModel.updateUserData(result);
+                              // Notify parent that user was updated
+                              if (onUserUpdated != null) {
+                                onUserUpdated!(result);
+                              }
+                            }
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),

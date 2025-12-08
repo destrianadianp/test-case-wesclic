@@ -4,9 +4,6 @@ import 'package:test_case_skill/modules/login/services/login_mock_service.dart';
 import '../../../core/models/user_model.dart';
 
 class UserDetailViewModel extends ChangeNotifier {
-  Future <void> deleteUser(String userId) async {
-    await _apiService.deleteUser(userId);
-  }
   final LoginMockService _apiService = LoginMockService();
   UserModel? _user;
   bool _isLoading = true;
@@ -31,6 +28,24 @@ class UserDetailViewModel extends ChangeNotifier {
       _errorMessage = 'Gagal memuat detail pengguna.';
     } finally {
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> refreshUser() async {
+    if (_user != null) {
+      fetchUserDetail(_user!.id);
+    }
+  }
+
+  Future<void> deleteUser(String userId) async {
+    await _apiService.deleteUser(userId);
+  }
+
+  // Method to update the local user data
+  void updateUserData(UserModel updatedUser) {
+    if (_user != null && _user!.id == updatedUser.id) {
+      _user = updatedUser;
       notifyListeners();
     }
   }

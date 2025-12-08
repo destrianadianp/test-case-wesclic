@@ -16,9 +16,9 @@ class UserListViewModel extends ChangeNotifier {
   UserListViewModel() {
     fetchAllUsers();
   }
-  void addLocalUser(UserModel user) {
-    _allUsers.insert(0, user); 
 
+  void addLocalUser(UserModel user) {
+    _allUsers.insert(0, user);
     notifyListeners();
   }
 
@@ -33,6 +33,21 @@ class UserListViewModel extends ChangeNotifier {
       _errorMessage = 'Gagal memuat daftar pengguna. $e';
     } finally {
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Method to remove a user locally (for deletion)
+  void removeUser(String userId) {
+    _allUsers.removeWhere((user) => user.id == userId);
+    notifyListeners();
+  }
+
+  // Method to update a user locally (for editing)
+  void updateUser(UserModel updatedUser) {
+    final index = _allUsers.indexWhere((user) => user.id == updatedUser.id);
+    if (index != -1) {
+      _allUsers[index] = updatedUser;
       notifyListeners();
     }
   }

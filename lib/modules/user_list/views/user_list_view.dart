@@ -15,9 +15,9 @@ class UserListView extends StatelessWidget {
       create: (context) => UserListViewModel(),
       child: Scaffold(
         appBar: AppBar(title: const Text('All Users')),
-        body: Column( 
+        body: Column(
           children: [
-            Expanded( 
+            Expanded(
               child: Consumer<UserListViewModel>(
                 builder: (context, viewModel, child) {
                   if (viewModel.isLoading) {
@@ -30,13 +30,23 @@ class UserListView extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     itemCount: viewModel.allUsers.length,
                     itemBuilder: (context, index) {
-                      return UserListItem(user: viewModel.allUsers[index]);
+                      return UserListItem(
+                        user: viewModel.allUsers[index],
+                        onDelete: (userId) {
+                          // This callback is called when user is deleted
+                          viewModel.removeUser(userId);
+                        },
+                        onUserUpdated: (updatedUser) {
+                          // This callback is called when user is updated
+                          viewModel.updateUser(updatedUser);
+                        },
+                      );
                     },
                   );
                 },
               ),
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Consumer<UserListViewModel>(
@@ -48,7 +58,7 @@ class UserListView extends StatelessWidget {
 
                       if (result is UserModel) {
 
-                        viewModel.addLocalUser(result); 
+                        viewModel.addLocalUser(result);
                       } else if (result == true) {
                         viewModel.fetchAllUsers();
                       }
