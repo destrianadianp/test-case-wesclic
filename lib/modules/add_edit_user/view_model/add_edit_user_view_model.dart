@@ -1,10 +1,12 @@
-import 'dart:developer';
+// import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:test_case_skill/core/models/user_model.dart';
-import 'package:test_case_skill/modules/login/services/login_mock_service.dart';
+import 'package:test_case_skill/modules/add_edit_user/services/add_edit_user_api_service.dart';
+import 'package:test_case_skill/modules/user_detail/models/user_detail_api_service.dart';
 
 class AddEditUserViewModel extends ChangeNotifier {
-  final LoginMockService _userService = LoginMockService();
+  final AddEditUserApiService _apiService = AddEditUserApiService();
+  final UserDetailApiService _detailApiService = UserDetailApiService();
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -29,7 +31,7 @@ class AddEditUserViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final user = await _userService.getUserDetail(userId);
+      final user = await _detailApiService.getUserDetail(userId);
       _editingUser = user;
       nameController.text = _editingUser!.name;
       jobController.text = _editingUser!.job ?? '';
@@ -65,7 +67,7 @@ class AddEditUserViewModel extends ChangeNotifier {
       if (_editingUser != null) {
         //edit
         print('submitForm: EDITING - Attempting to update user ${_editingUser!.id} with name: $name, job: $job');
-        final result = await _userService.editUser(name, job, _editingUser!.id);
+        final result = await _apiService.editUser(name, job, _editingUser!.id);
         if (result != null) {
           print('submitForm: SUCCESS - User updated successfully! Name: ${result.name}, Job: ${result.job}');
         } else {
@@ -75,7 +77,7 @@ class AddEditUserViewModel extends ChangeNotifier {
       } else {
         // tambah
         print('submitForm: Creating new user with name: $name, job: $job');
-        final result = await _userService.createUser(name: name, job: job);
+        final result = await _apiService.createUser(name: name, job: job);
         print('submitForm: User creation completed');
         return result;
       }
