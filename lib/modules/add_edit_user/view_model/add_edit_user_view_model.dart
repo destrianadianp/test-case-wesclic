@@ -68,8 +68,19 @@ class AddEditUserViewModel extends ChangeNotifier {
         //edit
         print('submitForm: EDITING - Attempting to update user ${_editingUser!.id} with name: $name, job: $job');
         final result = await _apiService.editUser(name, job, _editingUser!.id);
+
         if (result != null) {
-          print('submitForm: SUCCESS - User updated successfully! Name: ${result.name}, Job: ${result.job}');
+          // Preserve the original email and imageUrl when updating a user
+          final updatedUser = UserModel(
+            id: _editingUser!.id,
+            name: name,
+            email: _editingUser!.email,
+            imageUrl: _editingUser!.imageUrl,
+            job: job,
+          );
+
+          print('submitForm: SUCCESS - User updated successfully! Name: ${updatedUser.name}, Job: ${updatedUser.job}');
+          return updatedUser;
         } else {
           print('submitForm: editUser returned null - update may have failed');
         }

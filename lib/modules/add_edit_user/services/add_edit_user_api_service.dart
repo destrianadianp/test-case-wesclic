@@ -48,7 +48,17 @@ class AddEditUserApiService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
         print('editUser service: SUCCESS - User updated successfully! Name: ${data['name']}, Job: ${data['job']}, ID: ${data['id']}');
-        final result = UserModel.fromCRUD(data, email: 'updated.user@reqres.in', id: userId);
+
+        // Since we're only updating name and job via the API, return a UserModel with the updated values
+        // but preserve the original id, email and imageUrl that don't change during name/job updates
+        final result = UserModel(
+          id: userId,  // Use the original userId
+          name: name,  // Use the updated name
+          email: 'placeholder@reqres.in', // This should be replaced with actual email from the original user
+          imageUrl: 'https://i.pravatar.cc/150?img=default', // This should be replaced with original image
+          job: job,    // Use the updated job
+        );
+
         print('editUser service: Returning updated user model with name: ${result.name}, job: ${result.job}, id: ${result.id}');
         return result;
       } else {
