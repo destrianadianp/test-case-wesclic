@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:test_case_skill/modules/login/services/login_mock_service.dart';
+import 'package:test_case_skill/modules/user_detail/models/user_detail_api_service.dart';
 
 import '../../../core/models/user_model.dart';
 
 class UserDetailViewModel extends ChangeNotifier {
-  final LoginMockService _apiService = LoginMockService();
+  final UserDetailApiService _apiService = UserDetailApiService();
+  
   UserModel? _user;
   bool _isLoading = true;
   String? _errorMessage;

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:test_case_skill/modules/login/services/login_mock_service.dart';
-
 import '../../../core/models/user_model.dart';
+import '../../home/services/home_api_service.dart';
 
 class UserListViewModel extends ChangeNotifier {
-  final LoginMockService _apiService = LoginMockService();
+  final HomeApiService _apiService = HomeApiService();
   List<UserModel> _allUsers = [];
   bool _isLoading = true;
   String? _errorMessage;
