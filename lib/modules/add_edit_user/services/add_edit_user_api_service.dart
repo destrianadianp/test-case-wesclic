@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../core/models/user_model.dart';
+import '../../../core/services/api_header.dart';
 
 class AddEditUserApiService {
    Future<UserModel> createUser({String? name, String? job}) async {
@@ -10,10 +11,7 @@ class AddEditUserApiService {
     final url = Uri.parse('https://reqres.in/api/users');
     final response = await http.post(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
-      },
+      headers: ApiHeader.headers,
       body: jsonEncode({'name': name, 'job': job}),
     );
     if (response.statusCode == 201) {
@@ -35,10 +33,7 @@ class AddEditUserApiService {
 
       final response = await http.put(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
-        },
+        headers: ApiHeader.headers,
         body: jsonEncode({'name': name, 'job': job}),
       );
 

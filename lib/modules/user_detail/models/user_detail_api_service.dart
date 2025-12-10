@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../core/models/user_model.dart';
+import '../../../core/services/api_header.dart';
 
 class UserDetailApiService {
   Future<UserModel> getUserDetail(String userId) async {
@@ -10,10 +11,7 @@ class UserDetailApiService {
     final url = Uri.parse('https://reqres.in/api/users/$userId');
     final response = await http.get(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
-      },
+      headers: ApiHeader.headers,
     );
     print('Get user detail response status: ${response.statusCode}');
     print('Get user detail response body: ${response.body}');
@@ -33,10 +31,7 @@ class UserDetailApiService {
     final url = Uri.parse('https://reqres.in/api/users/$userId');
     final response = await http.delete(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
-      },
+      headers: ApiHeader.headers,
     );
     if (response.statusCode == 204) {
       print('Successfully deleted user with ID: $userId');

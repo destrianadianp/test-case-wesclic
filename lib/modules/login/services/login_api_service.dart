@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/models/user_model.dart';
+import '../../../core/services/api_header.dart';
 import 'package:http/http.dart' as http;
 
 class LoginApiService {
@@ -10,10 +11,7 @@ class LoginApiService {
     final url = Uri.parse('https://reqres.in/api/login');
     final response = await http.post(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
-      },
+      headers: ApiHeader.headers,
       body: jsonEncode({'email': email, 'password': password}),
     );
     print('Login response status: ${response.statusCode}');

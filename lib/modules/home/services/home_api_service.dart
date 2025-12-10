@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/models/user_model.dart';
 import '../../../core/services/mock_data.dart';
+import '../../../core/services/api_header.dart';
 
 class HomeApiService {
   Future<List<UserModel>> getTopUsers() async {
@@ -16,10 +17,7 @@ class HomeApiService {
     final urlAllUsers = Uri.parse('https://reqres.in/api/users?page=2');
     final response = await http.get(
       urlAllUsers,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'reqres_10624e327e9040d296d958c229836b07',
-      },
+      headers: ApiHeader.headers,
     );
     print('Get all users response status: ${response.statusCode}');
     print('Get all users response body: ${response.body}');
