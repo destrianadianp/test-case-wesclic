@@ -27,7 +27,13 @@ class HomeApiService {
       final listUser = data['data'];
       print('Successfully fetched ${listUser.length} users');
       return List<UserModel>.from(
-        listUser.map((user) => UserModel.fromJson(user)),
+        listUser.map((user) => UserModel(
+          id: user['id'].toString(),
+          name: '${user['first_name']} ${user['last_name']}',
+          email: user['email'],
+          imageUrl: user['avatar'],
+          job: user['job'], // Add job field parsing
+        )),
       );
     } else if (response.statusCode == 400) {
       final data = jsonDecode(response.body);

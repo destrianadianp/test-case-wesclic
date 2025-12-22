@@ -26,7 +26,13 @@ class LoginApiService {
       await prefs.setString('token', token);
       print('Token saved to SharedPreferences');
 
-      return UserModel.fromLoginResponse(email, token);
+      return UserModel(
+        id: 'reqres_user',
+        name: email,
+        email: email,
+        imageUrl: 'https://i.pravatar.cc/150?img=1',
+        token: token,
+      );
     } else if (response.statusCode == 400) {
       final data = jsonDecode(response.body);
       print('Login failed with error: ${data['error'] ?? 'Kredensial tidak valid.'}');

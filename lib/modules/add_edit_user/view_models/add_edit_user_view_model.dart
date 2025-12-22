@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_case_skill/core/models/user_model.dart';
 import 'package:test_case_skill/modules/add_edit_user/services/add_edit_user_api_service.dart';
-import 'package:test_case_skill/modules/user_detail/models/user_detail_api_service.dart';
+import 'package:test_case_skill/modules/user_detail/services/user_detail_api_service.dart';
 
 class AddEditUserViewModel extends ChangeNotifier {
   final AddEditUserApiService _apiService = AddEditUserApiService();
@@ -94,7 +94,7 @@ class AddEditUserViewModel extends ChangeNotifier {
       }
     } catch (e, stack) {
       _errorMessage = 'Gagal: $e';
-      print('submitForm: ERROR - Exception caught during form submission');
+      print('submitForm: ERROR - Exception caught during form subscription');
       print('submitForm: Error message: $e');
       print('submitForm: Stack trace: $stack');
       return null;

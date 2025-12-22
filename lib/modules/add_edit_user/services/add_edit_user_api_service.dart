@@ -17,7 +17,13 @@ class AddEditUserApiService {
     if (response.statusCode == 201) {
       final data = jsonDecode(response.body);
       print('Successfully created user: ${data['name']}, job: ${data['job']}, ID: ${data['id']}');
-      return UserModel.fromCRUD(data, email: 'created.user@reqres.in');
+      return UserModel(
+        id: data['id']?.toString() ?? '0',
+        name: data['name'] ?? '',
+        email: 'created.user@reqres.in',
+        imageUrl: data['avatar'] ?? 'https://i.pravatar.cc/150?img=default',
+        job: data['job']
+      );
     } else {
       print('Failed to create user. Status code: ${response.statusCode}');
       throw Exception('Gagal menghubungi server');

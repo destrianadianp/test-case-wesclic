@@ -19,7 +19,7 @@ class LoginViewModel extends ChangeNotifier {
     try {
       final user = await _apiService.login(email, password);
       return user;
-    } 
+    }
     catch (e) {
       _errorMessage = e.toString().replaceFirst('Exception: ', '');
       return null;

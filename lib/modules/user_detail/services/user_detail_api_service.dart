@@ -18,8 +18,15 @@ class UserDetailApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      final userData = data['data'];
       print('Successfully fetched user detail for ID: $userId');
-      return UserModel.fromJson(data['data']);
+      return UserModel(
+        id: userData['id'].toString(),
+        name: '${userData['first_name']} ${userData['last_name']}',
+        email: userData['email'],
+        imageUrl: userData['avatar'],
+        job: userData['job'],
+      );
     } else {
       print('Get user detail failed for ID: $userId with status code: ${response.statusCode}');
       throw Exception('Gagal menghubungi server. Kode: ${response.statusCode}');

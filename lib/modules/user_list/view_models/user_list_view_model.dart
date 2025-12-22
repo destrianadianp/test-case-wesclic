@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/models/user_model.dart';
-import '../../home/services/home_api_service.dart';
+import '../services/user_list_api_service.dart';
 
 class UserListViewModel extends ChangeNotifier {
-  final HomeApiService _apiService = HomeApiService();
+  final UserListApiService _apiService = UserListApiService();
   List<UserModel> _allUsers = [];
   bool _isLoading = true;
   String? _errorMessage;

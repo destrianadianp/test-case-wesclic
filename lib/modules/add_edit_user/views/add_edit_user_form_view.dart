@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_case_skill/modules/add_edit_user/view_model/add_edit_user_view_model.dart';
+import 'package:test_case_skill/modules/add_edit_user/view_models/add_edit_user_view_model.dart';
 
 import '../../../core/styles/custom_button.dart';
 import '../../../core/styles/custom_text_field.dart';
