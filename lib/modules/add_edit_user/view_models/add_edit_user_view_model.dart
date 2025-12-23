@@ -1,5 +1,6 @@
 // import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:test_case_skill/core/database/database_helper.dart';
 import 'package:test_case_skill/core/models/user_model.dart';
 import 'package:test_case_skill/modules/add_edit_user/services/add_edit_user_api_service.dart';
 import 'package:test_case_skill/modules/user_detail/services/user_detail_api_service.dart';
@@ -46,6 +47,7 @@ class AddEditUserViewModel extends ChangeNotifier {
     }
   }
   Future<UserModel?> submitForm() async {
+    final dbHelper = DatabaseHelper();
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -78,7 +80,8 @@ class AddEditUserViewModel extends ChangeNotifier {
             imageUrl: _editingUser!.imageUrl,
             job: job,
           );
-
+          //simpan sqlite
+          await dbHelper.updateUser(updatedUser);
           print('submitForm: SUCCESS - User updated successfully! Name: ${updatedUser.name}, Job: ${updatedUser.job}');
           return updatedUser;
         } else {
@@ -90,6 +93,8 @@ class AddEditUserViewModel extends ChangeNotifier {
         print('submitForm: Creating new user with name: $name, job: $job');
         final result = await _apiService.createUser(name: name, job: job);
         print('submitForm: User creation completed');
+        //simpan sqlite
+        await dbHelper.insertUser(result);
         return result;
       }
     } catch (e, stack) {

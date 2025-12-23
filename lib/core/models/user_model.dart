@@ -15,4 +15,27 @@ class UserModel {
     this.token,
     this.job
   });
+
+//simpan data ke sqflite
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'imageUrl': imageUrl,
+      'token': token,
+      'job': job,
+    };
+  }
+  //ambil data dari sqflite
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'],
+      name: map['name'],
+      email: map['email'],
+      imageUrl: map['imageUrl'],
+      token: map['token'],
+      job: map['job'],
+    );
+  }
 }

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:test_case_skill/modules/home/services/home_api_service.dart';
 import 'package:test_case_skill/modules/login/services/login_api_service.dart';
 
+import '../../../core/database/database_helper.dart';
 import '../../../core/models/user_model.dart';
 
 class HomeViewModel extends ChangeNotifier {//
 final HomeApiService _apiService = HomeApiService();
+final DatabaseHelper _dbHelper = DatabaseHelper();
+
   List<UserModel> _topUsers = [];
   bool _isLoading = true;
   String? _errorMessage;
@@ -24,9 +27,24 @@ final HomeApiService _apiService = HomeApiService();
     notifyListeners();
 
     try {
-      _topUsers = await _apiService.getTopUsers();
+      // First, try to get top users from local database
+      List<UserModel> localData = await _dbHelper.fetchTopUsers();
+
+      if (localData.isNotEmpty) {
+        // If we have local data, use the first 3 as top users
+        _topUsers = localData.take(3).toList();
+      } else {
+        // If no local data, fetch from API
+        _topUsers = await _apiService.getTopUsers();
+      }
     } catch (e) {
-      _errorMessage = 'Gagal memuat pengguna teratas.';
+      // If there's an error, try to get data from local database as fallback
+      try {
+        List<UserModel> localData = await _dbHelper.fetchTopUsers();
+        _topUsers = localData.take(3).toList();
+      } catch (localError) {
+        _errorMessage = 'Gagal memuat pengguna teratas.';
+      }
     } finally {
       _isLoading = false;
       notifyListeners();
