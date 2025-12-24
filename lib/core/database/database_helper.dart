@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test_case_skill/core/models/user_model.dart';
@@ -35,6 +36,7 @@ class DatabaseHelper {
           try {
             db.execute('ALTER TABLE users ADD COLUMN token TEXT');
           } catch (e) {
+            debugPrint('Failed to add token column: $e');
           }
         }
       },
@@ -54,7 +56,7 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db.query('users');
       return maps.map((e)=> UserModel.fromMap(e)).toList();
     }
-    
+
   Future<void> insertUser(UserModel user) async{
     final db = await database;
     await db.insert(

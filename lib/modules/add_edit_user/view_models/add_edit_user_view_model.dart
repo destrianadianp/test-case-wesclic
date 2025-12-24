@@ -1,4 +1,3 @@
-// import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:test_case_skill/core/database/database_helper.dart';
 import 'package:test_case_skill/core/models/user_model.dart';
@@ -22,7 +21,7 @@ class AddEditUserViewModel extends ChangeNotifier {
   bool get isEditing => _editingUser != null;
 
   AddEditUserViewModel({String? userId}){
-    print('AddEditUserViewModel created with userId: $userId');
+    ('AddEditUserViewModel created with userId: $userId');
     if (userId != null) {
       _loadUserForEdit(userId);
     }
@@ -36,11 +35,11 @@ class AddEditUserViewModel extends ChangeNotifier {
       _editingUser = user;
       nameController.text = _editingUser!.name;
       jobController.text = _editingUser!.job ?? '';
-      print('User loaded for editing: ${_editingUser!.name} - ${_editingUser!.job}');
+      debugPrint('User loaded for editing: ${_editingUser!.name} - ${_editingUser!.job}');
     } catch (e, stack) {
       _errorMessage = 'Gagal memuat data user: $e';
-      print('Error loading user for edit: $e');
-      print('Stack trace: $stack');
+      debugPrint('Error loading user for edit: $e');
+      debugPrint('Stack trace: $stack');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -55,11 +54,11 @@ class AddEditUserViewModel extends ChangeNotifier {
     final name = nameController.text.trim();
     final job = jobController.text.trim();
 
-    print('submitForm: Starting form submission - Name: $name, Job: $job, Editing: ${_editingUser != null}');
+    debugPrint('submitForm: Starting form submission - Name: $name, Job: $job, Editing: ${_editingUser != null}');
 
     if (name.isEmpty || job.isEmpty) {
         _errorMessage = "Nama dan Jabatan harus diisi.";
-        print('submitForm: Validation failed - name or job is empty');
+        debugPrint('submitForm: Validation failed - name or job is empty');
         _isLoading = false;
         notifyListeners();
         return null;
@@ -68,7 +67,7 @@ class AddEditUserViewModel extends ChangeNotifier {
     try {
       if (_editingUser != null) {
         //edit
-        print('submitForm: EDITING - Attempting to update user ${_editingUser!.id} with name: $name, job: $job');
+        debugPrint('submitForm: EDITING - Attempting to update user ${_editingUser!.id} with name: $name, job: $job');
         final result = await _apiService.editUser(name, job, _editingUser!.id);
 
         if (result != null) {
@@ -82,29 +81,29 @@ class AddEditUserViewModel extends ChangeNotifier {
           );
           //simpan sqlite
           await dbHelper.updateUser(updatedUser);
-          print('submitForm: SUCCESS - User updated successfully! Name: ${updatedUser.name}, Job: ${updatedUser.job}');
+          debugPrint('submitForm: SUCCESS - User updated successfully! Name: ${updatedUser.name}, Job: ${updatedUser.job}');
           return updatedUser;
         } else {
-          print('submitForm: editUser returned null - update may have failed');
+          debugPrint('submitForm: editUser returned null - update may have failed');
         }
         return result;
       } else {
         // tambah
-        print('submitForm: Creating new user with name: $name, job: $job');
+        debugPrint('submitForm: Creating new user with name: $name, job: $job');
         final result = await _apiService.createUser(name: name, job: job);
-        print('submitForm: User creation completed');
+        debugPrint('submitForm: User creation completed');
         //simpan sqlite
         await dbHelper.insertUser(result);
         return result;
       }
     } catch (e, stack) {
       _errorMessage = 'Gagal: $e';
-      print('submitForm: ERROR - Exception caught during form subscription');
-      print('submitForm: Error message: $e');
-      print('submitForm: Stack trace: $stack');
+      debugPrint('submitForm: ERROR - Exception caught during form subscription');
+      debugPrint('submitForm: Error message: $e');
+      debugPrint('submitForm: Stack trace: $stack');
       return null;
     } finally {
-      print('submitForm: Setting loading state to false');
+      debugPrint('submitForm: Setting loading state to false');
       _isLoading = false;
       notifyListeners();
     }

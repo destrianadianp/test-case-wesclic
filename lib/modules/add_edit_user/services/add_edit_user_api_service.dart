@@ -1,22 +1,21 @@
 import 'dart:convert';
-
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../core/models/user_model.dart';
 import '../../../core/services/api_header.dart';
 
 class AddEditUserApiService {
    Future<UserModel> createUser({String? name, String? job}) async {
-    print('Attempting to create user with name: $name, job: $job');
+    debugPrint('Attempting to create user with name: $name, job: $job');
     final url = Uri.parse('https://reqres.in/api/users');
     final response = await http.post(
       url,
       headers: ApiHeader.headers,
-      body: jsonEncode({'name': name, 'job': job}),
+       body: jsonEncode({'name': name, 'job': job}),
     );
     if (response.statusCode == 201) {
       final data = jsonDecode(response.body);
-      print('Successfully created user: ${data['name']}, job: ${data['job']}, ID: ${data['id']}');
+      debugPrint('Successfully created user: ${data['name']}, job: ${data['job']}, ID: ${data['id']}');
       return UserModel(
         id: data['id']?.toString() ?? '0',
         name: data['name'] ?? '',
@@ -25,17 +24,17 @@ class AddEditUserApiService {
         job: data['job']
       );
     } else {
-      print('Failed to create user. Status code: ${response.statusCode}');
+      debugPrint('Failed to create user. Status code: ${response.statusCode}');
       throw Exception('Gagal menghubungi server');
     }
   }
 
   Future<UserModel?> editUser(String name, String job, String userId) async {
-    print('editUser service: Starting edit operation for user ID: $userId, new name: $name, new job: $job');
+    debugPrint('editUser service: Starting edit operation for user ID: $userId, new name: $name, new job: $job');
 
     try {
       final url = Uri.parse('https://reqres.in/api/users/$userId');
-      print('editUser service: Making PUT request to: $url');
+      debugPrint('editUser service: Making PUT request to: $url');
 
       final response = await http.put(
         url,
@@ -43,12 +42,12 @@ class AddEditUserApiService {
         body: jsonEncode({'name': name, 'job': job}),
       );
 
-      print('editUser service: Request completed with status: ${response.statusCode}');
-      print('editUser service: Response body: ${response.body}');
+      debugPrint('editUser service: Request completed with status: ${response.statusCode}');
+      debugPrint('editUser service: Response body: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
-        print('editUser service: SUCCESS - User updated successfully! Name: ${data['name']}, Job: ${data['job']}, ID: ${data['id']}');
+        debugPrint('editUser service: SUCCESS - User updated successfully! Name: ${data['name']}, Job: ${data['job']}, ID: ${data['id']}');
 
         // Since we're only updating name and job via the API, return a UserModel with the updated values
         // but preserve the original id, email and imageUrl that don't change during name/job updates
@@ -60,17 +59,17 @@ class AddEditUserApiService {
           job: job,    // Use the updated job
         );
 
-        print('editUser service: Returning updated user model with name: ${result.name}, job: ${result.job}, id: ${result.id}');
+        debugPrint('editUser service: Returning updated user model with name: ${result.name}, job: ${result.job}, id: ${result.id}');
         return result;
       } else {
-        print('editUser service: Request failed with status: ${response.statusCode}');
-        print('editUser service: Failure response body: ${response.body}');
+        debugPrint('editUser service: Request failed with status: ${response.statusCode}');
+        debugPrint('editUser service: Failure response body: ${response.body}');
         throw Exception('Gagal menghubungi server: ${response.statusCode}');
       }
     } catch (e, stack) {
-      print('editUser service: ERROR - Exception occurred during edit operation');
-      print('editUser service: Error: $e');
-      print('editUser service: Stack trace: $stack');
+      debugPrint('editUser service: ERROR - Exception occurred during edit operation');
+      debugPrint('editUser service: Error: $e');
+      debugPrint('editUser service: Stack trace: $stack');
       rethrow;
     }
   }
