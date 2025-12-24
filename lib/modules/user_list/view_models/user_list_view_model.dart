@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../core/database/database_helper.dart';
 import '../../../core/models/user_model.dart';
-import '../../home/services/home_api_service.dart';
+import '../services/user_list_api_service.dart';
 
 class UserListViewModel extends ChangeNotifier {
-  final HomeApiService _apiService = HomeApiService();
+  final UserListApiService _apiService = UserListApiService();
+  final DatabaseHelper _dbHelper = DatabaseHelper();
   List<UserModel> _allUsers = [];
   bool _isLoading = true;
   String? _errorMessage;
@@ -27,7 +29,16 @@ class UserListViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      List<UserModel>localData = await _dbHelper.getAllUsers();
+      if (localData.isEmpty) {
       _allUsers = await _apiService.getAllUsers();
+        for (var user in _allUsers) {
+          await _dbHelper.insertUser(user);
+        }
+      }
+      else{
+        _allUsers = localData;
+      }
     } catch (e) {
       _errorMessage = 'Gagal memuat daftar pengguna. $e';
     } finally {
@@ -37,7 +48,8 @@ class UserListViewModel extends ChangeNotifier {
   }
 
   // Method to remove a user locally (for deletion)
-  void removeUser(String userId) {
+  void removeUser(String userId) async {
+    await _dbHelper.deteleUser(userId);
     _allUsers.removeWhere((user) => user.id == userId);
     notifyListeners();
   }

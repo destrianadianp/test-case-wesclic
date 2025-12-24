@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:test_case_skill/modules/user_detail/models/user_detail_api_service.dart';
+import 'package:test_case_skill/core/database/database_helper.dart';
+import 'package:test_case_skill/modules/user_detail/services/user_detail_api_service.dart';
 
 import '../../../core/models/user_model.dart';
 
 class UserDetailViewModel extends ChangeNotifier {
   final UserDetailApiService _apiService = UserDetailApiService();
-  
+
   UserModel? _user;
   bool _isLoading = true;
   String? _errorMessage;
@@ -41,6 +42,7 @@ class UserDetailViewModel extends ChangeNotifier {
 
   Future<void> deleteUser(String userId) async {
     await _apiService.deleteUser(userId);
+    await DatabaseHelper().deteleUser(userId);
   }
 
   // Method to update the local user data
