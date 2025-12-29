@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
                   const Text('Here are our top users', style: TextStyle(fontSize: 16, color: Colors.grey)),
                   const SizedBox(height: 20),
 
-                  
+
                   Expanded(
                     child: viewModel.isLoading
                         ? const Center(child: CircularProgressIndicator())
@@ -38,14 +38,14 @@ class HomeView extends StatelessWidget {
                                   return TopUserCard(
                                     user: viewModel.topUsers[index],
                                     rank: index + 1,
-                                    onTap: () {}, 
+                                    onTap: () {},
                                   );
                                 },
                               ),
                   ),
                   const SizedBox(height: 20),
 
-                  
+
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -55,6 +55,16 @@ class HomeView extends StatelessWidget {
                         );
                       },
                       child: const Text('View All Users'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('Socket');
+                      },
+                      child: const Text('Open WebSocket Chat'),
                     ),
                   ),
                 ],

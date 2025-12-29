@@ -21,10 +21,11 @@ class DatabaseHelper {
     return await openDatabase(
       path,
       version: 3, // Incremented version to ensure migration happens
-      onCreate: (db, version) {
-        return db.execute(
+      onCreate: (db, version) async {
+        await db.execute(
           'CREATE TABLE users(id TEXT PRIMARY KEY, name TEXT, email TEXT, imageUrl TEXT, token TEXT, job TEXT)'
         );
+        await db.execute('CREATE TABLE messages(id INTEGER PRIMARY KEY AUTOINCREMENT,sender TEXT, message TEXT, time TEXT)');
       },
       onUpgrade: (db, oldVersion, newVersion) {
         if (oldVersion < 2) {
@@ -88,5 +89,19 @@ class DatabaseHelper {
         where: 'id = ?',
         whereArgs: [id],
       );
+    }
+
+    //crud messages
+    Future<void> insertMessage(Map<String,dynamic> message) async{
+      final db = await database;
+      await db.insert(
+        'messages',
+        message,
+      );
+    }
+    Future<List<Map<String, dynamic>>> getAllMessages() async {
+      final db = await database;
+      final List<Map<String, dynamic>> maps = await db.query('messages', orderBy: 'id ASC');
+      return maps;
     }
   }

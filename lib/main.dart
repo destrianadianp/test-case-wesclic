@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_case_skill/modules/add_edit_user/views/add_edit_user_form_view.dart';
 import 'package:test_case_skill/modules/home/views/home_view.dart';
+import 'package:test_case_skill/modules/socket_manager/socket_view.dart';
 
 import 'core/styles/app_theme.dart';
 import 'modules/login/views/login_view.dart';
+import 'modules/socket_manager/socket_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,24 +25,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Test Case',
-      theme: appTheme,
-      initialRoute: initialRoute,
-      routes: {
-        'Login': (context) => const LoginView(),
-        'Home': (context) => const HomeView(),
-        '/add-user': (context) {
-          final userId = ModalRoute.of(context)?.settings.arguments as String?;
-          log('Navigating to /add-user with userId: $userId');
-          return AddEditUserFormView(userId: userId);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SocketViewModel()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Test Case',
+        theme: appTheme,
+        initialRoute: initialRoute,
+        routes: {
+          'Login': (context) => const LoginView(),
+          'Home': (context) => const HomeView(),
+          'Socket': (context) => SocketView(),
+          '/add-user': (context) {
+            final userId = ModalRoute.of(context)?.settings.arguments as String?;
+            log('Navigating to /add-user with userId: $userId');
+            return AddEditUserFormView(userId: userId);
+          },
+          '/add-edit-user': (context) {
+            final userId = ModalRoute.of(context)?.settings.arguments as String?;
+            log('Navigating to /add-edit-user with userId: $userId');
+            return AddEditUserFormView(userId: userId);
+          },
         },
-        '/add-edit-user': (context) {
-          final userId = ModalRoute.of(context)?.settings.arguments as String?;
-          log('Navigating to /add-edit-user with userId: $userId');
-          return AddEditUserFormView(userId: userId);
-        },
-      },
+      ),
     );
   }
 }
