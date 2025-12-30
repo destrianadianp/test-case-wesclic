@@ -42,7 +42,7 @@ class UserDetailViewModel extends ChangeNotifier {
 
   Future<void> deleteUser(String userId) async {
     await _apiService.deleteUser(userId);
-    await DatabaseHelper().deteleUser(userId);
+    await DatabaseHelper().deleteUser(userId);
   }
 
   // Method to update the local user data

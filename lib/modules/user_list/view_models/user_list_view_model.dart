@@ -49,7 +49,7 @@ class UserListViewModel extends ChangeNotifier {
 
   // Method to remove a user locally (for deletion)
   void removeUser(String userId) async {
-    await _dbHelper.deteleUser(userId);
+    await _dbHelper.deleteUser(userId);
     _allUsers.removeWhere((user) => user.id == userId);
     notifyListeners();
   }

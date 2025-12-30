@@ -29,13 +29,13 @@ class _SocketViewState extends State<SocketView> {
         myNickname = savedNickname;
       }
 
-      context.read<SocketViewModel>().initSocket(myNickname!);
+      context.read<SocketViewmodel>().initSocket(myNickname!);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<SocketViewModel>();
+    final vm = context.watch<SocketViewmodel>();
     return Scaffold(
       appBar: AppBar(title: Text("Global Chat (${myNickname ?? 'Connecting...'})")),
       body: Column(
